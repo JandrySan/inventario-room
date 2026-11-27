@@ -32,6 +32,9 @@ interface ItemDao {
     @Update
     suspend fun update(item: Item)
 
+    @Query("UPDATE items SET quantity = quantity - 1 WHERE id = :id AND quantity > 0")
+    suspend fun decrementQuantity(id: Int)
+
     @Delete
     suspend fun delete(item: Item)
 
