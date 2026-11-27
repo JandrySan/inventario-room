@@ -22,6 +22,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.inventory.data.ItemsRepository
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -57,6 +58,14 @@ class ItemDetailsViewModel(
         viewModelScope.launch {
             itemsRepository.decrementQuantity(itemId)
         }
+    }
+
+    /**
+     * Deletes the item from the [ItemsRepository]'s data source.
+     */
+    suspend fun deleteItem() {
+        val item = itemsRepository.getItemStream(itemId).first() ?: return
+        itemsRepository.deleteItem(item)
     }
 
     companion object {
